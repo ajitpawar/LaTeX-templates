@@ -1,0 +1,83 @@
+%% -*- master.tex -*-
+
+%% Copyright (C) 2012 - Ajit Pawar
+
+% Use memoir documentclass
+\documentclass[a4paper, 11pt, article, oneside, final]{memoir}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+% Graphics
+\usepackage{graphicx}
+%\usepackage{subfig}
+
+% Lets you comment out blocks of LaTeX code (i.e. avoid using %%) by simply
+% writing \begin{comment} ... \end{comment}
+\usepackage{verbatim}
+
+% Fonts
+\usepackage[sc]{mathpazo}
+\linespread{1.05}         % Palatino needs more leading (space between lines)
+\usepackage[T1]{fontenc}
+
+% Fixme
+\usepackage[footnote,draft,silent,nomargin]{fixme}
+
+% Itemize
+\renewcommand{\labelitemi}{$\ast$}
+
+% Math
+\usepackage{amsmath, amssymb, bm, mathtools, float}
+
+% PDF include
+\usepackage{pdfpages}
+
+% Table of Content
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% Tables
+\usepackage{longtable}
+
+% URLs
+\usepackage{url}
+
+% BibTeX
+\usepackage[square]{natbib}
+
+\pagestyle{companion}
+
+% Start document
+\title{Course Name}
+
+%% Ugly hack for adding a project name header
+\author{
+  {\noindent\HUGE\bfseries Project Name} \\ \\ \\
+  John Doe, john@doe.com \\
+  Jane Doe, jane@doe.com \\
+}
+\date{\today}
+
+\begin{document}\sloppy
+\maketitle
+
+\newpage
+\tableofcontents
+\cleardoublepage
+
+\input{chapters/index}
+
+\newpage
+
+\bibliographystyle{plainnat}
+\bibliography{reference}
+
+\newpage
+\appendix
+\input{appendix/index}
+
+\end{document}
+
+%% end-of-master.tex

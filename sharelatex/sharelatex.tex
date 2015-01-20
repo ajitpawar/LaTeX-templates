@@ -1,0 +1,214 @@
+\RequirePackage[l2tabu,orthodox]{nag}  % warn about common LaTeX pitfalls
+\RequirePackage[ascii]{inputenc}  % input is 7-bit ASCII
+\RequirePackage{fixltx2e}  % fix LaTeX2e kernel bugs
+\documentclass[11pt,twoside]{article}
+\usepackage{graphicx, amsmath, amssymb,enumerate,color}
+\usepackage[height=9in,width=7in]{geometry}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usepackage{mathtools}
+\usepackage{listings}
+
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+% Set up fonts.
+\usepackage[T1]{fontenc}  % use true 8-bit fonts
+\usepackage[notextcomp]{kpfonts}  % "Kepler" fonts
+\usepackage{slantsc}  % allow slanted small-caps
+\usepackage{microtype}  % perform various font optimizations
+% Redefine left/right brackets to use curvier glyphs than kpfont's default.
+\DeclareSymbolFont{lmsymb}     {OMS}{lmsy}{m}{n}
+\DeclareSymbolFont{lmlargesymb}{OMX}{lmex}{m}{n}
+\DeclareMathDelimiter{\rbrace}{\mathclose}{lmsymb}{"67}{lmlargesymb}{"09}
+\DeclareMathDelimiter{\lbrace}{\mathopen}{lmsymb}{"66}{lmlargesymb}{"08}
+% Page layout: stretch text to fill up page.
+\addtolength\footskip{.25\headheight}
+\flushbottom
+% Ceil and floor
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+% Use "tab" command
+\usepackage[savepos]{zref}% http://ctan.org/pkg/zref
+\makeatletter
+% \zsaveposx is defined since 2011/12/05 v2.23 of zref-savepos
+\@ifundefined{zsaveposx}{\let\zsaveposx\zsavepos}{}
+\newcounter{hposcnt}
+\renewcommand*{\thehposcnt}{hpos\number\value{hposcnt}}
+\newcommand*{\tab}[2]{% \tab{<len>}{<stuff>}
+  \stepcounter{hposcnt}%
+  \zsaveposx{\thehposcnt}%
+  \zref@refused{\thehposcnt}%
+  \kern\dimexpr-\zposx{\thehposcnt}sp+1in+\oddsidemargin\relax%
+  \rlap{\kern#1\relax#2}%
+  \kern\dimexpr-1in-\oddsidemargin+\zposx{\thehposcnt}sp\relax%
+}
+
+\setlength\parindent{0pt}
+
+% Coloring
+\usepackage{xcolor}
+\lstdefinestyle{base}{
+  language=C,
+  emptylines=1,
+  breaklines=true,
+  basicstyle=\ttfamily\color{black},
+  moredelim=**[is][\color{blue}]{@}{@},
+  moredelim=**[is][\color{red}]{@!}{@!},
+  moredelim=**[is][\textit]{@_}{@_},
+}
+
+
+% ==========================BEGIN FILE=======================================
+\begin{document}
+
+\begin{center}
+    {\sc \LARGE Assignment \#N } \\ \ \\
+    {\bf Author 1 (999999) \\ Author 2 (999999) } \\ \ \\
+\end{center}
+\hrule
+\vrule
+
+
+
+\begin{enumerate}
+
+% ==========================Q1=======================================
+\item
+\textbf{a.} Show that, for the collaborators graph represented by the following adjacency lists, there is a way of splitting up the students into two rooms such that no two collaborators end up in the same room.
+\\ \\ Room 1 : [1, 4, 5, 8]
+\\ Room 2 : [3, 2, 6, 7]
+\\* \\* \\* \textbf{b.} Describe how you would implement AssignRooms using the adjacency lists representation of the graph G. Write your answer in pseudocode and fill in the details of how each step is carried out. Your implementation should run in worst-case time $\mathcal{O}(n^2)$.
+\begin{algorithm}
+\caption{Assign Rooms}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{AssignRooms}{$G$} \Comment{Let $G.AdjList$ be the adjacency list}
+    \State $masterRoomsList = [1]$
+    \State $rooms = [\text{ }]$
+    \State
+    \For{$i \leftarrow 1, ..., n$}
+        \State $rooms[i] = \infty $
+    \EndFor
+    \State
+    \For{$i \leftarrow 1, ..., n$}
+        \State $neighbourRooms = [\text{ }]$
+        \State
+        \For{$k \text{ in } G.AdjList[i]$}
+            \State $neighourRooms.add(rooms[k])$
+        \EndFor
+        \State
+        \State $availableRooms =$
+        \State \indent \indent $list(set(masterRoomsList) - set(neighbourRooms))$
+        \State
+        \If{$availableRooms.empty()$}
+            \State $rooms[i] = max(masterRoomsList) + 1$
+            \State $masterRoomsList.add(rooms[i])$
+        \Else
+            \State $rooms[1] = min(availableRooms)$
+        \EndIf
+        \State
+    \EndFor
+    \State
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+% ==========================Q2=======================================
+\newpage
+\item
+\begin{enumerate}
+
+\item Here is the modified DFS:
+\begin{lstlisting}[mathescape,frame=single,style=base]
+
+DFS(G)
+    @bridges = []               $\textit{// list of bridges}$
+    points = []@                $\textit{// list of articulation points}$
+    for each u $\in$ G.V
+        u.colour = WHITE
+        u.$\pi$ = NIL
+        @u.d = 0@
+    time = 0
+    for each u $\in$ G.V
+        if u.colour == WHITE
+            DFS-VISIT(G,u,bridges,points)
+    @return bridges, points@
+
+
+DFS-VISIT(G,u,bridges,points)
+    time = time + 1
+    u.d = u.low = time
+    u.colour = GRAY
+    for each v $\in$ G.Adj[u]
+        if v.colour == WHITE
+            v.$\pi$ = u
+            DFS-VISIT(G,v,bridges,points)
+            @if u.d == 1                     $\textit{// if root node}$
+                if G.Adj[u].size >= 2 AND v.low > u.d
+                    bridges.append({u,v})
+                    points.append(u)
+            else if v.low > u.d
+                bridges.append({u,v})
+                points.append(u)
+            u.low = min(u.low, v.low)
+        else if u.$\pi$ != v
+            u.low = min(u.low, v.d)@
+    u.colour = BLACK
+    time = time + 1
+    u.f = time
+\end{lstlisting}
+
+\newpage
+\end{enumerate}
+
+
+% ==========================Q3=======================================
+
+\item .\\
+
+    \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,semithick]
+    \tikzstyle{every state}=[fill=none,draw=black,text=black]
+
+    \node[initial,state] (q0)               {$q0$};
+    \node[state]        (q1) [right of=q0]  {$q1$};
+    \node[state]        (q2) [right of=q1]  {$q2$};
+    \node[state,accepting]        (q3) [right of=q2]  {$q3$};
+
+
+
+  \path (q0)edge                node {0} (q1)
+            edge [loop below]   node {1,2} (q0)
+        (q1)edge [loop above]   node {0} (q1)
+            edge [bend left]    node {2} (q0)
+            edge                node {1} (q2)
+        (q2)edge [bend left]    node {0} (q1)
+            edge [bend left=70] node {1} (q0)
+            edge                node {2} (q3)
+        (q3)edge [loop below]   node {0,1,2} (q3)
+
+
+    \end{tikzpicture}
+
+
+    \begin{itemize}
+    \item[] q0: \{w | w does not contain substring "012" and ends in 1 or 2\}
+    \item[] q1: \{w | w does not contain substring "012" and ends in 0 \}
+    \item[] q2: \{w | w does not contain substring "012" and ends in 01  \}
+    \item[] q3: \{w | w contains substring "012"  \}
+    \end{itemize}
+    \\ \ \\
+
+
+
+
+% ========================== END FILE =======================================
+\end{enumerate}
+\end{document}

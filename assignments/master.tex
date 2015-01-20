@@ -1,0 +1,39 @@
+%% -*- master.tex -*-
+
+%% Copyright (C) 2012 - Ajit Pawar
+
+% Use memoir documentclass
+\documentclass[a4paper,11pt,article,oneside,final]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+% Graphics
+\usepackage{graphicx}
+
+% Fonts
+\usepackage[sc]{mathpazo}
+\linespread{1.05}         % Palatino needs more leading (space between lines)
+\usepackage[T1]{fontenc}
+
+% Math
+\usepackage{amsmath, amssymb, bm, mathtools, float}
+
+% Itemize
+\renewcommand{\labelitemi}{$\ast$}
+
+% PDF include
+\usepackage{pdfpages}
+
+\pagestyle{companion}
+\title{Course Name}
+\author{
+  {\noindent\HUGE\bfseries Assignment 1} \\ \\ \\
+  John Doe, 99999999 \\
+}
+\begin{document}\sloppy
+\maketitle
+
+\input{sections/index}
+
+\end{document}

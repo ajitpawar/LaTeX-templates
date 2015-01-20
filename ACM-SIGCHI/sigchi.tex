@@ -1,0 +1,177 @@
+\documentclass{sigchi}
+
+%% Adapted from CHI (Computer Human Interaction) conference proceedings template
+
+% Load basic packages
+\usepackage{balance}  % to better equalize the last page
+\usepackage{graphics} % for EPS, load graphicx instead
+\usepackage{times}    % comment if you want LaTeX's default font
+\usepackage{url}      % llt: nicely formatted URLs
+\usepackage{float}
+\usepackage{tabulary}
+
+% llt: Define a global style for URLs, rather that the default one
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\bf\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+
+% To make various LaTeX processors do the right thing with page size.
+\def\pprw{8.5in}
+\def\pprh{11in}
+\special{papersize=\pprw,\pprh}
+\setlength{\paperwidth}{\pprw}
+\setlength{\paperheight}{\pprh}
+\setlength{\pdfpagewidth}{\pprw}
+\setlength{\pdfpageheight}{\pprh}
+
+% Make sure hyperref comes last of your loaded packages,
+% to give it a fighting chance of not being over-written,
+% since its job is to redefine many LaTeX commands.
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+pdftitle={SIGCHI Conference Proceedings Format},
+pdfauthor={LaTeX},
+pdfkeywords={SIGCHI, proceedings, archival format},
+bookmarksnumbered,
+pdfstartview={FitH},
+colorlinks,
+citecolor=black,
+filecolor=black,
+linkcolor=black,
+urlcolor=black,
+breaklinks=true,
+}
+
+% create a shortcut to typeset table headings
+\newcommand\tabhead[1]{\small\textbf{#1}}
+
+
+% End of preamble. Here it comes the document.
+\begin{document}
+
+\title{Assistive Technologies for Novice Cooks}
+
+\numberofauthors{5}
+\author{
+  \alignauthor Jane Doe\\
+    \affaddr{University of Toronto}\\
+    \email{me@example.com}\\
+  \alignauthor John Doe\\
+    \affaddr{University of Toronto}\\
+    \email{me@example.com}\\
+  \alignauthor John Doe\\
+    \affaddr{University of Toronto}\\
+    \email{me@example.com}\\
+  \alignauthor Jane Doe\\
+    \affaddr{University of Toronto}\\
+    \email{me@example.com}\\
+  \alignauthor John Doe\\
+    \affaddr{University of Toronto}\\
+    \email{me@example.com}\\
+}
+
+
+\maketitle
+
+\begin{abstract}
+The research described in this paper aims to develop a solution for the problems that novice cooks face when learning to cook. The project began by studying the problems in general self-learning, and later focused the problem space further to observer cooking as a self-learning experience. Specific problems were identified through observation and surveys of novice cooks in the target audience. Solutions were made for the key problems found, and these solutions came together into a prototype mobile application, which we call Chef Buddy. The paper describes the different processes that went into the development of the prototype, and how we will extend it in the future to create a usable product for novice cooks in the kitchen.
+\end{abstract}
+
+\keywords{
+	Self-learning; cooking; prototype; mobile; mobile application; application; usability testing
+}
+
+\category{H.5.m.}{Information Interfaces and Presentation}{HCI}
+
+\section{Introduction}
+
+The process of cooking can be overwhelming for novice cooks and the traditional methods of cooking can help assist them cook the meal, but do they teach them how to cook? Self-learning is broad and it has been the center of research for a long time. Learning to cook is an important aspect of self-learning; however, having centralized tools to guide in the process of learning have not been the center of the self-learning research. We have identified novice cooks as the “culture” that had not received appropriate assistive technologies despite the massive explosion in recent the field.
+
+\section{Background Research}
+
+The broad problem space researched was self-learning and distance education, then the problem space was narrowed down to cooking as self-learning experience. Different self-learning aspects were researched to collect data about existing work in the field, these aspects are: social considerations of distance education, interactive educational media in self-education, accessibility of self-education for students with special needs, self-assessment in education and finance of e-learning. From the research on these aspects, we concluded that to develop educational systems that motivate learning, we must provide a sense of accomplishment, as well as a progress tracking mechanism.$^{1}$ The paper furthermore stressed the fact that distance education accommodates different learning styles and habits and that it should be accessible to people with special needs. Another paper concluded the fact that the freedom to shape learning gave participants a sense of being in command of their situation, which ultimately translated into higher perceived competence.$^{2}$
+
+\section{User Research}
+
+To identify problems faced by novice cooks, we recruited friends that matched our target audience and conducted research to gather information about their cooking experience. This research was conducted face-to-face using questionnaires, interviews and observations. Data was collected and categorized afterwards.\newline \newline
+Through data categorizations, common problems faced by novice cooks were discovered. Some of these problems involved accessibility to information about ingredients and their substitute, scalability of serving size and ability to convert measurement units. Data showed that participants refer to external resources for information about ingredients and cooking terms, this not only blocked the process of gaining cooking knowledge but also limited their ability to find substitutes for ingredients without the need to refer to external resources. Moreover, surfing external unit conversion resources for measurement conversion was disruptive and not ideal when planning for shopping.
+Discovering recipes and following them was a common issue among participants. Participants sometimes ended up using recipes that required “advanced” cooking skills, and the outcome when using these recipes was unpleasant due to the lack of the skill to succeed. Moreover, it was clear that searching for recipes by name is not ideal all the time, as it appears to be times when search results of hashtags and ingredient keywords were more desirable. Recipe contents are critical to ease the cooking process. From gathered data, it was clear that the cluttered recipes were not ideal to assist novice cooks in their learning journey.\newline \newline
+Keeping track of one’s progress was another identified problem. Participants were not aware of skills gained when trying recipe and if these skill were improved. This lack of tracking skill progression led to situations where they thought that they mastered a skill which was not reflected in the outcome dish. Moreover, participants were observed to favour documenting private notes and pictures as an indication of progression.
+
+\section{Design Requirements}
+In order to address the various problems faced by novice cooks, we decided to create a product that would guide the user through the entire cooking cycle, encompassing recipe discovery, planning, cooking, and feedback. We tried to keep each step of the process manageable and make as few assumptions about prerequite knowledge as possible, since we were targeting novice cooks. And while we tried to create an interface that would minimize user error, we realized that mistakes are inevitable and a great source of learning. When mistakes happen, the interface should be flexible enough to help the user recover and learn.$^{3}$
+To provide a step-by-step and personal experience, the system needed to be accessible at all stages of the cooking cycle, especially during meal preparation in the kitchen. Since our preliminary research revealed that almost all of our target audience had access to smart phones, this was the clear platform on which to build our system. \newline \newline
+In order to help the user focus on the cooking and not the app, we envisioned a rich auditory interface that would allow the app to have conversations with the user. This would also reduce the need for the user to touch the device, beneficial since the user’s hands may be occupied or dirty. Our prototype did not feature this auditory interface due to technical limitations.
+
+
+\section{Low-Fidelity Prototype}
+Based on user research, a paper prototype was built to demonstrate basic functionality of our app. The main purpose was to build a working model that performs 3 key functions: discovering a recipe, preparing to cook a recipe (pre-cooking procedures) and cooking the recipe. Based on the physical prototype, a web-based low-fidelity prototype was developed by combining individual designs. In this prototype, decisions were made to add or exclude certain features which resulted in an impact on the design or the functionality of the app. \newline
+
+\begin{tabular}{|p{2cm}|p{5.7cm}|}
+\hline
+\textbf{Decision} & \textbf{Design Implication} \\ \hline
+
+Continuous vertical scroll & We wanted to allow the user to freely move back and forth between cooking steps. One way to give the user such degree of movement was to make the app vertically scrollable. This implied a vertical design layout \\ \hline
+Status bar & We added a status bar on top to display what step number the user is currently on. This increased the visibility of the system status as it gave the user a sense of how far they are into the cooking process and how much is still left \\ \hline
+
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{2cm}|p{5.7cm}|}
+\hline
+Search vs recommendation &
+Our initial prototypes featured just a search bar on the home screen, but we believe novice cooks often don’t know what to search for. So in an attempt to move away from search-centric design to a more personalized design, we re-designed the home screen to show a list of recommended recipes. The search bar was moved to the top. \\ \hline
+Ingredient quantity scaling &
+We decided to omit ingredient quantity scaling in the overview screen because it was cluttered and undiscoverable. Now users need to change the serving size just once on the overview screen and it will update all ingredient quantities automatically across all other screen. This gives the app consistency. \\ \hline
+Shopping experience & The shopping screen got cluttered with many features such as links to buy the ingredients, prices etc. To keep in line with our minimalistic design philosophy, we changed the shopping screen to show just a shopping list \\ \hline
+Stars vs badges & Rewarding the users with trophies/badges instead of stars ensured that our system matched the real world. Star icon was already being used for favouriting and rating recipes. \\ \hline
+\end{tabular}
+\newline
+
+\section{High-Fidelity Prototype}
+
+An interactive web-based interface was built to test some of the interactions of the system at a higher fidelity. The interface was designed to be used in the web browser of smartphones to simulate a native application. This prototype has a mix of non-interactive (e.g. the profile screen)  and interactive features. Time constraints prevented us from making a fully interactive prototype, so we prioritized the key areas and potentially confusing interactions. The interactive features of the prototype focused largely on the shopping list creation and in-kitchen cooking experience. \newline \newline
+The prototype allowed the user to generate a shopping list based on the recipes they had favorited, with the ability to adjust serving sizes to get appropriate ingredient quantities. Many aspects of the cooking experience were also interactive in the prototype: on the recipe overview screen, serving size could similarly be adjusted to update ingredient quantities, and many terms could be tapped to get an informational popover. All quantities could also be tapped to get common unit conversions. The prototype also included an interactive timer that would automatically appear after a step involving a timer was completed. All navigation systems were also interactive, allowing the user to switch between different screens and scroll through recipe steps. \newline \newline
+In this prototype, we made a distinction between scrolling through the steps of a recipe and tapping the checkmark button to advance to the next recipe. The reasoning was to allow for the user to peek at the recipe steps by scrolling, and indicate when a step had actually been completed by tapping the checkmark button. The latter allows us to update the progress bar, and automatically start timers after appropriate steps. User testing proved this to be the most confusing aspect of the system: the majority of test subjects did not recognize the difference between scrolling and tapping the checkmark button, leading to confusion. \newline \newline
+Other issues raised by user testing included users not noticing the timer appearing, being confused that they had to go to “Favorites” to generate a shopping list, and other small interface inconsistencies. A few users also indicated they would like a global setting for what kinds of units are used (imperial vs. metric).
+
+
+\section{Conclusion}
+In this project we focused on the needs of novice cooks and built an application that would assist them in learning culinary skills. Through our research we learned a lot about what difficulties our users face, and we tried to address each of these issues in our design. For example, in our recipes we explain the rationale for every step, keep track of the user's progress, suggest recipes that apply to the current skill set of the user and reward our users for their efforts. In the future with the availability of better technology, we hope to make the application voice operable. Also, we will extend the social capacity of our system to allow users to share their successes within their social circle. The user-centered design paradigm allowed us to add features to our prototype that we might never have thought of. In the end, we feel that we were able to conceptualize a cooking aide that is indispensable for the kitchen.
+
+
+% Balancing columns in a ref list is a bit of a pain because you
+% either use a hack like flushend or balance, or manually insert
+% a column break.  http://www.tex.ac.uk/cgi-bin/texfaq2html?label=balance
+% multicols doesn't work because we're already in two-column mode,
+% and flushend isn't awesome, so I choose balance.  See this
+% for more info: http://cs.brown.edu/system/software/latex/doc/balance.pdf
+%
+% Note that in a perfect world balance wants to be in the first
+% column of the last page.
+%
+% If balance doesn't work for you, you can remove that and
+% hard-code a column break into the bbl file right before you
+% submit:
+%
+% http://stackoverflow.com/questions/2149854/how-to-manually-equalize-columns-
+% in-an-ieee-paper-if-using-bibtex
+%
+% Or, just remove \balance and give up on balancing the last page.
+%
+\balance
+
+%\bibliographystyle{acm-sigchi}
+%\bibliography{p5}
+
+\section{References}
+\begin{enumerate}
+\item Rovai, Alfred P. Building sense of community at a distance. \textit{The International Review of Research in Open and Distance Learning 3.1} (2002).
+\item Cavanaugh, Catherine S. Use of Technology to Improve Student Persistence in an Online Program Study \textit{International Journal of Educational Telecommunications} 7.1 (2001): 73-88.
+\item Friedland, G., Hürst, W., \& Knipping, L. (2007, September). Educational multimedia systems: the past, the present, and a glimpse into the future. \textit{In Proceedings of the international workshop on Educational multimedia and multimedia education} (pp. 1­4). ACM.
+\end{enumerate}
+
+\end{document}
